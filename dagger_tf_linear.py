@@ -21,21 +21,21 @@ class Network(object):
 
         self.inp_dim = inp_dim
         self.out_dim = out_dim
-        self.W1 = tf.Variable(tf.truncated_normal((inp_dim, 100), stddev = 0.1))
-        self.b1 = tf.Variable(tf.constant(.1, shape = (100,)))
-        self.W2 = tf.Variable(tf.truncated_normal((100,100), stddev = 0.1))
-        self.b2 = tf.Variable(tf.constant(.1, shape = (100,)))
-        self.W3 = tf.Variable(tf.truncated_normal((100,out_dim), stddev = 0.1))
-        self.b3 = tf.Variable(tf.constant(.1, shape = (out_dim,)))
+        self.W1 = tf.Variable(tf.truncated_normal((inp_dim, out_dim), stddev = 0.1))
+        self.b1 = tf.Variable(tf.constant(.1, shape = (out_dim,)))
+        #self.W2 = tf.Variable(tf.truncated_normal((100,100), stddev = 0.1))
+        #self.b2 = tf.Variable(tf.constant(.1, shape = (100,)))
+        #self.W3 = tf.Variable(tf.truncated_normal((100,out_dim), stddev = 0.1))
+        #self.b3 = tf.Variable(tf.constant(.1, shape = (out_dim,)))
         self.obs = tf.placeholder(tf.float32, [None, inp_dim])
         self.act = tf.placeholder(tf.float32, [None, out_dim])
         self.optimizer = tf.train.AdamOptimizer(0.005)
         self._build_graph()
 
     def _build_graph(self):
-        h1 = tf.matmul(self.obs, self.W1) + self.b1
-        h2 = tf.matmul(h1, self.W2) + self.b2
-        self.act_pred = tf.matmul(h2, self.W3) + self.b3
+        #h1 = tf.matmul(self.obs, self.W1) + self.b1
+        #h2 = tf.matmul(h1, self.W2) + self.b2
+        self.act_pred = tf.matmul(self.obs, self.W1) + self.b1
         self.loss = tf.reduce_mean(tf.reduce_sum(tf.square(self.act_pred - self.act), reduction_indices = [1]))
         self.train_step = self.optimizer.minimize(self.loss)
 
